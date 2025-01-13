@@ -13,7 +13,24 @@ public static class Arrays
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
 
-        return []; // replace this return statement with your own
+        //1. Initialise the multiples array length using the length variables 
+        //2. Initialise the counter i and set the counter to 1
+        //3. using the while loop, check if the counter is less than the length variable
+        //if yes then the loop will continue the calculation 
+        //To get the multiple, multiply the number with (length - (length-1) and store the result in result variable
+        //Add the multiple to the muptiles array by subtracting the counter by 1.
+        //4. return the multiples
+
+        double[] multiples = new double[length];
+
+        int i = 1;
+        while (i <= length)
+        {
+            double result = number * (length - (length - i));
+            multiples[i - 1] = result;
+            i++;
+        }
+        return multiples; // replace this return statement with your own
     }
 
     /// <summary>
@@ -29,5 +46,21 @@ public static class Arrays
         // Remember: Using comments in your program, write down your process for solving this problem
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
+
+        // Step 1: Calculate the elements to move
+        // Get the last 'amount' elements
+        // Step 2: Remove these elements from the end of the list
+        // Step 3: Insert the elements at the beginning
+
+        List<int> toMove = data.GetRange(data.Count - amount, amount);
+        data.RemoveRange(data.Count - amount, amount);
+        data.InsertRange(0, toMove);
+
     }
+
+
+
+
+
+
 }
