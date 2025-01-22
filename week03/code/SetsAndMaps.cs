@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Text.Json;
 
 public static class SetsAndMaps
@@ -19,11 +20,36 @@ public static class SetsAndMaps
     /// that there were no duplicates) and therefore should not be returned.
     /// </summary>
     /// <param name="words">An array of 2-character words (lowercase, no duplicates)</param>
-    public static string[] FindPairs(string[] words)
+public static string[] FindPairs(string[] words)
+{
+    // Create HashSet for O(1) lookups
+    HashSet<string> wordsSet = new HashSet<string>(words);
+    HashSet<string> pairsSet = new HashSet<string>();
+      // To track added pairs
+    List<string> pairs = new List<string>();
+
+    foreach (var item in words)
     {
-        // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        string itemReverse = string.Concat(item[1], item[0]);
+
+        // Check if the reverse pair exists in the words set
+        if (wordsSet.Contains(itemReverse))
+        {
+            // Create both pair combinations
+            string pairsJoined = string.Concat(item, " & ", itemReverse);
+            string reversePairsJoined = string.Concat(itemReverse, " & ", item);
+
+            // Only add if neither pair exists in the pairsSet
+            if (!pairsSet.Contains(pairsJoined) && !pairsSet.Contains(reversePairsJoined))
+            {
+                pairs.Add(pairsJoined);
+                pairsSet.Add(pairsJoined); // Add the pair to the set to track it
+            }
+        }
     }
+
+    return pairs.ToArray();
+}
 
     /// <summary>
     /// Read a census file and summarize the degrees (education)
@@ -43,6 +69,12 @@ public static class SetsAndMaps
         {
             var fields = line.Split(",");
             // TODO Problem 2 - ADD YOUR CODE HERE
+
+            //check if the key exist in the degrees summary 
+            if(!degrees.ContainsKey(fields[3]))
+                degrees.Add(fields[3], 1);
+            else 
+                degrees[fields[3]] += 1 ;
         }
 
         return degrees;
@@ -67,7 +99,22 @@ public static class SetsAndMaps
     public static bool IsAnagram(string word1, string word2)
     {
         // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+
+        //perform check on the length to the two word and check
+        // if the two words are the same in character and in arrangement
+        if((word1.Length != word2.Length) || (word1 == word2))
+            return false;
+
+        // Sort the characters of both words
+        string sortedWord1 = new string(word1.OrderBy(c => c).ToArray());
+        string sortedWord2 = new string(word2.OrderBy(c => c).ToArray());
+
+        // Compare the sorted words
+        bool areAnagrams = sortedWord1 == sortedWord2;
+
+        return areAnagrams;
+      
+    
     }
 
     /// <summary>
