@@ -20,36 +20,36 @@ public static class SetsAndMaps
     /// that there were no duplicates) and therefore should not be returned.
     /// </summary>
     /// <param name="words">An array of 2-character words (lowercase, no duplicates)</param>
-public static string[] FindPairs(string[] words)
-{
-    // Create HashSet for O(1) lookups
-    HashSet<string> wordsSet = new HashSet<string>(words);
-    HashSet<string> pairsSet = new HashSet<string>();
-      // To track added pairs
-    List<string> pairs = new List<string>();
-
-    foreach (var item in words)
+    public static string[] FindPairs(string[] words)
     {
-        string itemReverse = string.Concat(item[1], item[0]);
+        // Create HashSet for O(1) lookups
+        HashSet<string> wordsSet = new HashSet<string>(words);
+        HashSet<string> pairsSet = new HashSet<string>();
+        // To track added pairs
+        List<string> pairs = new List<string>();
 
-        // Check if the reverse pair exists in the words set
-        if (wordsSet.Contains(itemReverse))
+        foreach (var item in words)
         {
-            // Create both pair combinations
-            string pairsJoined = string.Concat(item, " & ", itemReverse);
-            string reversePairsJoined = string.Concat(itemReverse, " & ", item);
+            string itemReverse = string.Concat(item[1], item[0]);
 
-            // Only add if neither pair exists in the pairsSet
-            if (!pairsSet.Contains(pairsJoined) && !pairsSet.Contains(reversePairsJoined))
+            // Check if the reverse pair exists in the words set
+            if (wordsSet.Contains(itemReverse))
             {
-                pairs.Add(pairsJoined);
-                pairsSet.Add(pairsJoined); // Add the pair to the set to track it
+                // Create both pair combinations
+                string pairsJoined = string.Concat(item, " & ", itemReverse);
+                string reversePairsJoined = string.Concat(itemReverse, " & ", item);
+
+                // Only add if neither pair exists in the pairsSet
+                if (!pairsSet.Contains(pairsJoined) && !pairsSet.Contains(reversePairsJoined))
+                {
+                    pairs.Add(pairsJoined);
+                    pairsSet.Add(pairsJoined); // Add the pair to the set to track it
+                }
             }
         }
-    }
 
-    return pairs.ToArray();
-}
+        return pairs.ToArray();
+    }
 
     /// <summary>
     /// Read a census file and summarize the degrees (education)
@@ -71,10 +71,10 @@ public static string[] FindPairs(string[] words)
             // TODO Problem 2 - ADD YOUR CODE HERE
 
             //check if the key exist in the degrees summary 
-            if(!degrees.ContainsKey(fields[3]))
+            if (!degrees.ContainsKey(fields[3]))
                 degrees.Add(fields[3], 1);
-            else 
-                degrees[fields[3]] += 1 ;
+            else
+                degrees[fields[3]] += 1;
         }
 
         return degrees;
@@ -102,7 +102,7 @@ public static string[] FindPairs(string[] words)
 
         //perform check on the length to the two word and check
         // if the two words are the same in character and in arrangement
-        if((word1.Length != word2.Length) || (word1 == word2))
+        if ((word1.Length != word2.Length) || (word1 == word2))
             return false;
 
         // Sort the characters of both words
@@ -113,8 +113,8 @@ public static string[] FindPairs(string[] words)
         bool areAnagrams = sortedWord1 == sortedWord2;
 
         return areAnagrams;
-      
-    
+
+
     }
 
     /// <summary>
@@ -142,12 +142,20 @@ public static string[] FindPairs(string[] words)
         var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
         var featureCollection = JsonSerializer.Deserialize<FeatureCollection>(json, options);
-
-        // TODO Problem 5:
+    // TODO Problem 5:
         // 1. Add code in FeatureCollection.cs to describe the JSON using classes and properties 
         // on those classes so that the call to Deserialize above works properly.
         // 2. Add code below to create a string out each place a earthquake has happened today and its magitude.
         // 3. Return an array of these string descriptions.
-        return [];
+
+       // Process the feature collection
+    var summaries = featureCollection.Features
+        .Where(feature => feature.Properties.Mag.HasValue) // Ensure magnitude is available
+        .Select(feature => $"{feature.Properties.Place} - Mag {feature.Properties.Mag.Value}")
+        .ToArray();
+
+    return summaries;
+
+    
     }
 }
