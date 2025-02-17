@@ -49,11 +49,13 @@ public class TreeContainsTests
 }
 
 [TestClass]
+
 public class TreeReverseTests
 {
     [TestMethod]
     public void TreeReverse_Basic()
     {
+        // Create a new binary search tree and insert values
         BinarySearchTree tree = new();
         tree.Insert(5);
         tree.Insert(3);
@@ -63,7 +65,8 @@ public class TreeReverseTests
         tree.Insert(1);
         tree.Insert(6);
 
-        Assert.AreEqual("<IEnumerable>{10, 7, 6, 5, 4, 3, 1}", string.Join(", ", tree.Reverse().AsString()));
+        // Validate that the reverse order is correct
+        Assert.AreEqual("<Bst>{10, 7, 6, 5, 4, 3, 1}", tree.ToString());
     }
 }
 

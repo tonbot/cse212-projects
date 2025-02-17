@@ -1,45 +1,51 @@
 public class Node
 {
-    public int Data { get; set; }
-    public Node? Right { get; private set; }
-    public Node? Left { get; private set; }
+    public int Data { get; set; } // Property to hold data for the node
+    public Node? Right { get; private set; } // Reference to right child node
+    public Node? Left { get; private set; } // Reference to left child node
 
+    // Constructor that initializes a node with a given data value
     public Node(int data)
     {
         this.Data = data;
     }
 
+    // Method to insert a value into the tree while maintaining BST properties
     public void Insert(int value)
     {
-        // TODO Start Problem 1
+        if (value == Data) return; // Prevent duplicate insertions
 
         if (value < Data)
         {
-            // Insert to the left
             if (Left is null)
-                Left = new Node(value);
+                Left = new Node(value); // Create a new node if left child is null
             else
-                Left.Insert(value);
+                Left.Insert(value); // Recursively insert into the left subtree
         }
         else
         {
-            // Insert to the right
             if (Right is null)
-                Right = new Node(value);
+                Right = new Node(value); // Create a new node if right child is null
             else
-                Right.Insert(value);
+                Right.Insert(value); // Recursively insert into the right subtree
         }
     }
 
+    // Method to check if a given value exists in the tree
     public bool Contains(int value)
     {
-        // TODO Start Problem 2
-        return false;
+        if (value == Data) return true;
+        if (value < Data)
+            return Left != null && Left.Contains(value); // Search in the left subtree
+        else
+            return Right != null && Right.Contains(value); // Search in the right subtree
     }
 
+    // Method to calculate the height of the tree
     public int GetHeight()
     {
-        // TODO Start Problem 4
-        return 0; // Replace this line with the correct return statement(s)
+        int leftHeight = Left?.GetHeight() ?? 0; // Get height of left subtree
+        int rightHeight = Right?.GetHeight() ?? 0; // Get height of right subtree
+        return Math.Max(leftHeight, rightHeight) + 1; // Return max depth plus one
     }
 }
